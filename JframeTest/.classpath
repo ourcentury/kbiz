@@ -3,15 +3,13 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/excel_robin"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/mysql-connector-java-5.1.30/mysql-connector-java-5.1.30/mysql-connector-java-5.1.30-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/jsch-0.1.54.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/poi-3.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/poi-ooxml-3.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/poi-ooxml-schemas-3.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/lib/commons-codec-1.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/lib/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/lib/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/lib/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/workspace/poi-bin-3.15-20160924/poi-3.15/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-examples-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-excelant-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-ooxml-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-ooxml-schemas-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/poi-bin-3.15-20160924/poi-3.15/poi-scratchpad-3.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Documents/eclipse-jee-mars-2-win32/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -175,44 +175,58 @@ class xls_xlsx_reader {
 	    FileInputStream fis=new FileInputStream("c:\\testing1.xls");
 		int rowindex=0;
 		int columnindex=0;	
-		HSSFWorkbook workbook=new HSSFWorkbook(fis);		
-		
+		HSSFWorkbook workbook=new HSSFWorkbook(fis);
 		//시트 수 (첫번째에만 존재하므로 0을 준다)
 		//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
 		HSSFSheet sheet=workbook.getSheetAt(0);
-		//행의 수
+		//행의수 찾기
 		int rows=sheet.getPhysicalNumberOfRows();
-		System.out.println(rows + "피지컬넘버로우");
-         
-		String[][] dataset_temp = new String[rows][10]; // 엑셀에서 데이터를 담을 ARRAY
+		int no_of_col = 0; // 파일 형식에 따라 컬럼수 지정을 위한 변수 선언
+		// Verification for Product excel file or Company Excel File
+		HSSFRow row1 = sheet.getRow(0);
+		HSSFCell cell1 = row1.getCell(1);
+		String veri_value = cell1.getStringCellValue();		 
 		
-		for(rowindex=1;rowindex<rows;rowindex++){ // 첫번째 row ignore 
+		System.out.println(veri_value);
+		
+		if (veri_value.equals("File Verification:Product")){
+			no_of_col = 11; // 컬럼수 지정
+			}else if(veri_value.equals("File Verification:Company")){
+			no_of_col = 10; // 컬럼수 지정
+			}else{
+			System.out.println("파일에러입니다");
+			System.exit(1);
+			}
+		//행의 수		
+		String[][] dataset_temp = new String[rows][no_of_col]; // 엑셀에서 데이터를 담을 ARRAY
+		
+		
+		for(rowindex=2;rowindex<rows;rowindex++){ // 첫번째 row ignore 
 			HSSFRow row=sheet.getRow(rowindex); // 행 읽기
 			if(row !=null){
 				// int cells=row.getPhysicalNumberOfCells();				
 				// System.out.println(cells + "피지컬넘버셀" + "      "); //이부분 바꿔야함
 				// for(columnindex=0;columnindex<=cells;columnindex++){
-				for(columnindex=0;columnindex<10;columnindex++){ //셀 수 고정
+				for(columnindex=0;columnindex<no_of_col;columnindex++){ //셀 수 고정
 					HSSFCell cell=row.getCell(columnindex);									
-					String value=null; // 이곳에 엑셀 value가 쌓임
-					
+					String value=null; // 이곳에 엑셀 value가 쌓임					
 					  if(cell==null){
 						continue;
 				      }else{
 						switch (cell.getCellType()){
-						case XSSFCell.CELL_TYPE_FORMULA:
+						case HSSFCell.CELL_TYPE_FORMULA:
 							value=cell.getCellFormula();
 							break;
-						case XSSFCell.CELL_TYPE_NUMERIC:
+						case HSSFCell.CELL_TYPE_NUMERIC:
 							value=cell.getNumericCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_STRING:
+						case HSSFCell.CELL_TYPE_STRING:
 							value=cell.getStringCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_BLANK:
+						case HSSFCell.CELL_TYPE_BLANK:
 							value=cell.getBooleanCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_ERROR:
+						case HSSFCell.CELL_TYPE_ERROR:
 							value=cell.getErrorCellValue()+"";
 							break;
 					     }
@@ -221,7 +235,7 @@ class xls_xlsx_reader {
 						System.out.println("셀 내용 :"+ dataset_temp[rowindex][columnindex]);
 					 }  // if-else 문 끝					 					
 				}
-				if (dataset_temp[rowindex][0] == null||dataset_temp[rowindex][9] == null){					
+				if (dataset_temp[rowindex][0] == null||dataset_temp[rowindex][no_of_col-1] == null){					
 					System.out.println("오류오류오루"); //오류메세지 출력
 			    	System.exit(1);					    	
 			    } // 데이터 적합성 테스트 row가 끝날때마다 함 
