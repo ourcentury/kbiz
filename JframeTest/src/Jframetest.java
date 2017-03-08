@@ -18,10 +18,10 @@ public class Jframetest {
 		vari[0] = "xls";
 		vari[1] = "xls1";
 				
-		excel_excutor ec = new excel_excutor(vari[0]);
-		String[][] temp = ec.excel_excutor_result();
+		excel_excutor ec = new excel_excutor();
+		String[][] temp = ec.excel_excutor_result(vari[0]);
 		
-		System.out.println(temp[1][2]);
+		System.out.println(temp[2][1]);
 		
 		Db_operation dbo = new Db_operation(temp);
 		
