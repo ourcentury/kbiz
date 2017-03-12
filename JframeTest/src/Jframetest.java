@@ -12,22 +12,22 @@ import javax.swing.filechooser.*;
 
 public class Jframetest {			
 	public static void main(String[] args) throws IOException{
-	    Jframe_Test jt = new Jframe_Test();
-	    Jframe_Test jt2 = new Jframe_Test();
+	   // Jframe_Test jt = new Jframe_Test();
+	    //Jframe_Test jt2 = new Jframe_Test();
 	    
-	    jt2.Jframe_initial();	    
+	   // jt2.Jframe_initial();	    
 		System.out.println("실행되나?");
 		String[] vari = new String[2];
 		vari[0] = "xls";
 		vari[1] = "xls1";
-		/*		
+		
 		excel_excutor ec = new excel_excutor();
 		String[][] temp = ec.excel_excutor_result(vari[0]);
 		
 		System.out.println(temp[2][1]);
 		
 		Db_operation dbo = new Db_operation(temp);
-		*/
+		
 		
 	}
 }
