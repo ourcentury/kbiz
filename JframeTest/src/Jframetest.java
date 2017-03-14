@@ -115,7 +115,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		frame.setSize(500, 400);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 
+		
 		 //frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
 	}
