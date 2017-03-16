@@ -15,6 +15,7 @@ public class Jframetest {
 	public static void main(String[] args) throws IOException{
 	     Jframe_Test jt = new Jframe_Test();
 	     jt.Jframe_initial();
+	    
 	     
 	    //Jframe_Test jt2 = new Jframe_Test();
 	    
@@ -59,7 +60,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private JButton product_info_upload = new JButton("2.Upload Product Info");
 	private JButton info_download = new JButton("3.Download Information");
 	private GridLayout experimetalLayout = new GridLayout(2,0);
-	
+	private Container contentPane = frame.getContentPane();
 	
 	
 	public Jframe_Test() {
@@ -97,7 +98,6 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	/* 초기화면 만들기 */
 	public void Jframe_initial(){
 		
-		Container contentPane = frame.getContentPane();
 		contentPane.setBackground(Color.white);
 		contentPane.setLayout(experimetalLayout);
 		
@@ -108,6 +108,13 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		menuSelectPane.add(download_info);
 		menuSelectPane.add(tbd1);
 		menuSelectPane.add(tbd2);
+		
+		upload_comp.addActionListener(this);
+		upload_product.addActionListener(this);
+		upload_transaction.addActionListener(this);
+		download_info.addActionListener(this);
+		tbd1.addActionListener(this);
+		tbd2.addActionListener(this);
 		
 		contentPane.add(logoPane, BorderLayout.CENTER);
 		contentPane.add(menuSelectPane, BorderLayout.SOUTH);
@@ -120,13 +127,28 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		 
 	}
 	
+	public void Jframe_empty(Container contentPane, String pane_recog){	   	
+	   if (pane_recog=="initial"){
+		  contentPane.remove(logoPane);
+		  contentPane.remove(menuSelectPane);
+		  System.out.println("remove");
+	   }
+	   System.out.println("revalidate");
+	   frame.invalidate();
+	   frame.validate();
+	   frame.repaint();
+	   
+	}
 	public void Jframe_upload(){
 		
 	};
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (e.getSource() == upload_comp){			
+			String recog = "initial";
+			Jframe_empty(contentPane, recog);
+		}
 		/* 오픈 버튼 선택시 */
 		if (e.getSource() == openButton){
 			if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
