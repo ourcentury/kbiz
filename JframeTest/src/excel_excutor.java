@@ -34,8 +34,16 @@ public class excel_excutor {
 		//System.out.println(dataset_result[1][1]);
 	}
 	
-	public String[][] excel_excutor_result(String args) throws IOException{		
-		return this.dataset_result = xls_xlsx_reader.xls_reader();		
+	public String[][] excel_excutor_result(String args, String args1) throws IOException{
+		System.out.println(args);
+		if (args.equals("xls")){
+			System.out.println("여기입니다3");
+			return this.dataset_result = xls_xlsx_reader.xls_reader(args1);			
+		}else {
+			System.out.println("여기입니다4");
+			return this.dataset_result = xls_xlsx_reader.xlsx_reader(args1);				
+		}
+				
 	}
 	
 }
@@ -163,20 +171,16 @@ class xls_xlsx_reader {
 	
 	
 	
-	public xls_xlsx_reader(String args) throws IOException{
+	public xls_xlsx_reader() throws IOException{
 		
-		if (args == "xls"){
-			xls_reader();
-		}else {
-			xlsx_reader();				
-		}
+		
 	}
 	
 	
 	
-	public static String[][] xls_reader() throws IOException{
+	public static String[][] xls_reader(String file_path) throws IOException{
 		//파일을 읽기위해 엑셀파일을 가져온다
-	    FileInputStream fis=new FileInputStream("c:\\testing1.xls");
+	    FileInputStream fis=new FileInputStream(file_path);
 		int rowindex=0;
 		int columnindex=0;	
 		HSSFWorkbook workbook=new HSSFWorkbook(fis);
@@ -239,10 +243,11 @@ class xls_xlsx_reader {
 						System.out.println("셀 내용 :"+ dataset_temp[rowindex][columnindex]);
 					 }  // if-else 문 끝					 					
 				}
+				/*
 				if (dataset_temp[rowindex][0] == null||dataset_temp[rowindex][no_of_col-1] == null){					
 					System.out.println("오류오류오루"); //오류메세지 출력
 			    	System.exit(1);					    	
-			    } // 데이터 적합성 테스트 row가 끝날때마다 함 
+			    } // 데이터 적합성 테스트 row가 끝날때마다 함 */ 
 
 			}
 		}
@@ -250,8 +255,8 @@ class xls_xlsx_reader {
 		return dataset_temp;
 	}
 	
-	public void xlsx_reader() throws IOException{
-		FileInputStream fis=new FileInputStream("c:\\testing1.xlsx");
+	public static String[][] xlsx_reader(String file_path) throws IOException{
+		FileInputStream fis=new FileInputStream(file_path);
 		XSSFWorkbook workbook=new XSSFWorkbook(fis);
 		int rowindex=0;
 		int columnindex=0;
@@ -259,7 +264,25 @@ class xls_xlsx_reader {
 		//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
 		XSSFSheet sheet=workbook.getSheetAt(0);
 		//행의 수
+		//행의수 찾기
 		int rows=sheet.getPhysicalNumberOfRows();
+		int no_of_col = 0; // 파일 형식에 따라 컬럼수 지정을 위한 변수 선언
+	    // Verification for Product excel file or Company Excel File
+		XSSFRow row1 = sheet.getRow(0);
+		XSSFCell cell1 = row1.getCell(1);
+		String veri_value = cell1.getStringCellValue();		
+		
+		if (veri_value.equals("File Verification:Product")){
+			no_of_col = 11; // 컬럼수 지정
+			}else if(veri_value.equals("File Verification:Company")){
+			no_of_col = 10; // 컬럼수 지정
+			}else{
+			System.out.println("파일에러입니다");
+			System.exit(1);
+			}
+		//행의 수		
+		String[][] dataset_temp = new String[rows][no_of_col]; // 엑셀에서 데이터를 담을 ARRAY
+		
 		for(rowindex=1;rowindex<rows;rowindex++){  // 첫번째 row ignore 
 		//행을읽는다
 			XSSFRow row=sheet.getRow(rowindex);
@@ -299,7 +322,7 @@ class xls_xlsx_reader {
 			}
 		}
 		workbook.close();
-		
+		return dataset_temp;
 	}
 }
 

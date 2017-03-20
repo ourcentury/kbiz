@@ -43,7 +43,7 @@ public class Jframetest {
 	}
 }
 class  Jframe_Test extends JFrame implements ActionListener {
-
+    
 	private JFrame frame = new JFrame();
 	private JFrame frame1 = new JFrame();
 	private JPanel logoPane = new JPanel(); // 첫화면 logo 패널
@@ -51,6 +51,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private JPanel buttonPane = new JPanel();  // 
 	private JFileChooser jfc = new JFileChooser();
 	private JLabel jbl = new JLabel();
+	private JTextArea jtxt_area = new JTextArea();
 	/* 버튼 생성 */
 	private JButton upload_comp = new JButton("1.Upload Company Info");
 	private JButton upload_product = new JButton("2.Upload Product Info");
@@ -68,6 +69,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private GridLayout experimetalLayout = new GridLayout(2,1);
 	private Container contentPane = frame.getContentPane();
 	
+	public String[][] temp;
+	String file_extender;
 	
 	public Jframe_Test() {
 	     
@@ -103,8 +106,24 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	
 	/* 초기화면 만들기 */
 	public void Jframe_initial(){
-		
-		contentPane.setBackground(Color.gray);
+		/*
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		contentPane.setBackground(Color.white);
 		contentPane.setLayout(experimetalLayout);
 		
 		menuSelectPane.setLayout(new GridLayout(3,2));
@@ -136,17 +155,10 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	public void Jframe_empty(String pane_recog){	   	
 	   if (pane_recog=="initial"){		   
 		   contentPane.removeAll();
-		   //frame.getContentPane().removeAll();
 		   frame.invalidate();
 		   frame.validate();
 		   frame.repaint();		
-		   
-		   //frame.getContentPane().repaint();
-		   
-		  //contentPane.remove(logoPane);
-		  //contentPane.remove(menuSelectPane);
-		  
-		  System.out.println("remove");
+		   System.out.println("remove");
 	   }
 	   System.out.println("revalidate");
 	   //frame.invalidate();
@@ -178,8 +190,9 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//c.gridheight = 2;		
 		//c.gridwidth = 100;
 		
-		jbl.setText("파일선택 전입니다.");
-		label_panel.add(jbl);		
+	    jtxt_area.setText("파일선택 전입니다.");
+	    jtxt_area.setEditable(false);
+		label_panel.add(jtxt_area);		
 		contentPane.add(label_panel,c);
 		/*
 		c.gridx=1;
@@ -234,21 +247,20 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//JPanel textfield_panel = new JPanel();
 		
 		JFrame frame1 = new JFrame();
+		contentPane.setLayout(new BorderLayout());
 		
-		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야");
+		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야어야디야어아ㅓㅁ리ㅏㅇ러ㅏㅣ머리ㅓㅏㅁㄹ");
 		JScrollPane textfield_panel = new JScrollPane(txtfield);
 		
 		//JTextField txtfield = new JTextField(1);
 		//textfield_panel.add(txtfield);
 		
-		
-		//textfield_panel.setPreferredSize(new Dimension(500,400));
+	
+		//contentPane.setPreferredSize(new Dimension(100,200));
+		//textfield_panel.setPreferredSize(new Dimension(100,200));
 	    //contentPane = frame.getContentPane();
 		
-		
-		contentPane.setLayout(new BorderLayout());
 		contentPane.add(textfield_panel);
-		
 		
 		frame.invalidate();
 		frame.validate();
@@ -259,11 +271,10 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//frame1.setSize(500, 500);
       	//	frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		
-		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		/* 메뉴에서 업로드하는 메뉴를 선택 했을 때 */		
 		if (e.getSource() == upload_comp){			
 			String recog = "initial";
@@ -288,12 +299,20 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				boolean file2 = jfc.accept(file);				
 				String file_Name = file.getName();
 				String file_addr = file.getPath();
-				jbl.setText("선택한 파일: " + file_addr);
-				file_Name.lastIndexOf(".") ;
-				String file_name_new = file_Name.substring(file_Name.lastIndexOf(".")+1);
+				jtxt_area.setText("선택한 파일: " + file_addr);				
+				file_extender = file_Name.substring(file_Name.lastIndexOf(".")+1);
 				
-				System.out.println(file_Name);
-				System.out.println(file_name_new);
+				System.out.println(file_addr);
+				System.out.println(file_extender);
+				/*
+				try {
+					excel_excutor ec = new excel_excutor();
+					ec.excel_excutor_result(file_extender,file_addr);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				*/
 			}
 		}
 	   /* 세이브 버튼 선택시 */	
