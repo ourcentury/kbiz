@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -103,7 +104,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	/* 초기화면 만들기 */
 	public void Jframe_initial(){
 		
-		contentPane.setBackground(Color.white);
+		contentPane.setBackground(Color.gray);
 		contentPane.setLayout(experimetalLayout);
 		
 		menuSelectPane.setLayout(new GridLayout(3,2));
@@ -133,8 +134,15 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	}
 	
 	public void Jframe_empty(String pane_recog){	   	
-	   if (pane_recog=="initial"){
+	   if (pane_recog=="initial"){		   
 		   contentPane.removeAll();
+		   //frame.getContentPane().removeAll();
+		   frame.invalidate();
+		   frame.validate();
+		   frame.repaint();		
+		   
+		   //frame.getContentPane().repaint();
+		   
 		  //contentPane.remove(logoPane);
 		  //contentPane.remove(menuSelectPane);
 		  
@@ -225,6 +233,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	public void Jframe_download(){
 		//JPanel textfield_panel = new JPanel();
 		
+		JFrame frame1 = new JFrame();
 		
 		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야");
 		JScrollPane textfield_panel = new JScrollPane(txtfield);
@@ -233,12 +242,22 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//textfield_panel.add(txtfield);
 		
 		
-		//textfield_panel.setPreferredSize(new Dimension(250,250));
-		contentPane.add(textfield_panel, BorderLayout.CENTER);
+		//textfield_panel.setPreferredSize(new Dimension(500,400));
+	    //contentPane = frame.getContentPane();
+		
+		
+		contentPane.setLayout(new BorderLayout());
+		contentPane.add(textfield_panel);
+		
+		
 		frame.invalidate();
 		frame.validate();
 		frame.repaint();
 		
+		
+		//frame1.setVisible(true);
+		//frame1.setSize(500, 500);
+      	//	frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		
 		
