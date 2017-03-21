@@ -156,8 +156,14 @@ public class Db_operation {
 		cstmt.executeUpdate();
 		}
 		
-		
-		
+		// Insert and update the data to Kbiz_product, Kbiz_manufacturer
+		if (file_recognition==10){
+			   CallableStatement cstmt = con.prepareCall("{Call IANDU_MANUFACTURER_TABLE}");
+			   cstmt.executeUpdate();			   			   
+		}else if(file_recognition==11){
+			CallableStatement cstmt = con.prepareCall("{Call IANDU_PRODUCT_TABLE}");
+			cstmt.executeUpdate();			   			   
+		}			
 		
 		
 		/*
@@ -169,7 +175,7 @@ public class Db_operation {
 		*/
 		
 		con.close();
-		JOptionPane.showMessageDialog(null, "업데이트성공", "경고입니다", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "업데이트성공", "성공메세지", JOptionPane.INFORMATION_MESSAGE);
 		
 	}catch(Exception e){
 		JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);

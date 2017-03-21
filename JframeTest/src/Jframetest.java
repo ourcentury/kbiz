@@ -48,7 +48,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private JFrame frame1 = new JFrame();
 	private JPanel logoPane = new JPanel(); // 첫화면 logo 패널
 	private JPanel menuSelectPane = new JPanel(); //6개의 버튼으로 구성된 첫번재 화면 메뉴 선택 패널	
-	private JPanel buttonPane = new JPanel();  // 
+	private JPanel buttonPane = new JPanel();  //
+	private JPanel init_btn_Panel = new JPanel();
 	private JFileChooser jfc = new JFileChooser();
 	private JLabel jbl = new JLabel();
 	private JTextArea jtxt_area = new JTextArea();
@@ -169,8 +170,6 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	public void Jframe_upload(){
 		
 		JPanel label_panel = new JPanel();
-		JPanel blank_panel = new JPanel();
-		JPanel init_btn_Panel = new JPanel();
 		
 		contentPane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -212,6 +211,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		
 		/* init으로 돌아가는 버튼 */
 		init_btn_Panel.add(initButton);
+		initButton.addActionListener(this);
 		//c.anchor = GridBagConstraints.EAST;
 				
 		c.gridx=0;
@@ -244,11 +244,38 @@ class  Jframe_Test extends JFrame implements ActionListener {
 
 	};
 	public void Jframe_download(){
-		//JPanel textfield_panel = new JPanel();
+		JLabel comp = new JLabel(); //회사정보 검색 레이블
+		JCheckBox select_All = new JCheckBox("전체");
+		JCheckBox comp_info = new JCheckBox("회사정보");
+		JCheckBox product_info = new JCheckBox("상품정보");
+		JTextField comp_name_srch  = new JTextField();
+		JPanel group_panel = new JPanel();
 		
-		JFrame frame1 = new JFrame();
-		contentPane.setLayout(new BorderLayout());
+		GroupLayout g_layout = new GroupLayout(contentPane);
+		contentPane.setLayout(g_layout);
+		g_layout.setAutoCreateGaps(true) ;
+		g_layout.setAutoCreateContainerGaps(true);
 		
+		g_layout.setHorizontalGroup(
+				g_layout.createSequentialGroup()
+					.addComponent(comp)
+					.addComponent(select_All)
+					.addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(comp_info).addComponent(product_info)));
+		g_layout.setVerticalGroup(
+				   g_layout.createSequentialGroup()
+				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				           .addComponent(comp)
+				           .addComponent(select_All))
+				      .addComponent(product_info)
+				      .addComponent(comp_info)
+				);
+		
+		comp.setText("회사명 : ");
+		
+		//JPanel textfield_panel = new JPanel();		
+		//contentPane.setLayout(new BorderLayout());
+        //buttonPane.setLayout(new GridLayout());		
 		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야어야디야어아ㅓㅁ리ㅏㅇ러ㅏㅣ머리ㅓㅏㅁㄹ");
 		JScrollPane textfield_panel = new JScrollPane(txtfield);
 		
@@ -260,8 +287,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//textfield_panel.setPreferredSize(new Dimension(100,200));
 	    //contentPane = frame.getContentPane();
 		
-		contentPane.add(textfield_panel);
-		
+		//contentPane.add(textfield_panel);
+		frame.setSize(800,600);
 		frame.invalidate();
 		frame.validate();
 		frame.repaint();
@@ -288,10 +315,16 @@ class  Jframe_Test extends JFrame implements ActionListener {
 			String recog = "initial";
 			Jframe_empty(recog);
 			Jframe_download();
-			System.out.println("$$");
+			System.out.println("$$");			
+		}
+		/* 홈버튼 메뉴 선택 */		
+		if (e.getSource() == initButton){
+			String recog = "initial";
+			Jframe_empty(recog);
+			Jframe_initial();
+			System.out.println("!!");
 			
 		}
-		
 		/* 오픈 버튼 선택시 */
 		if (e.getSource() == openButton){
 			if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
