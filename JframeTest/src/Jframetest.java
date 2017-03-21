@@ -304,15 +304,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				
 				System.out.println(file_addr);
 				System.out.println(file_extender);
-				/*
-				try {
-					excel_excutor ec = new excel_excutor();
-					ec.excel_excutor_result(file_extender,file_addr);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				*/
+				
 			}
 		}
 	   /* 세이브 버튼 선택시 */	
@@ -321,7 +313,21 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				System.out.println(jfc.accept(jfc.getSelectedFile()));
 				File file = jfc.getSelectedFile();
 				String file_Name = file.getName();
-				System.out.println(file_Name);
+				String file_addr = file.getPath();
+				
+				System.out.println(file_addr + "2");
+				System.out.println(file_extender + "2");
+				
+				try {
+					excel_excutor ec = new excel_excutor();
+					temp = ec.excel_excutor_result(file_extender,file_addr);
+					
+					Db_operation dbo = new Db_operation(temp);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+								
 			}
 			System.out.println("파일세이브선택");
 		}

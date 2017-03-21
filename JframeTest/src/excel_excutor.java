@@ -239,8 +239,12 @@ class xls_xlsx_reader {
 							break;
 					     }
 						// System.out.println(rowindex + "행" + "열" + columnindex + "셀 내용 :"+value);
+						if(value.contains("\n")){
+							value = value.replace("\n", ";");
+						}
 						dataset_temp[rowindex][columnindex] = value;  // 고쳐야함!!					    
-						System.out.println("셀 내용 :"+ dataset_temp[rowindex][columnindex]);
+						
+						System.out.println("셀 내용 :"+ dataset_temp[rowindex][columnindex] + "길이 :" + dataset_temp[rowindex][columnindex].length());
 					 }  // if-else 문 끝					 					
 				}
 				/*

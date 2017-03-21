@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 /*
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -167,9 +169,11 @@ public class Db_operation {
 		*/
 		
 		con.close();
-		System.exit(1);
+		JOptionPane.showMessageDialog(null, "업데이트성공", "경고입니다", JOptionPane.ERROR_MESSAGE);
 		
 	}catch(Exception e){
+		JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);
+		
 		e.printStackTrace();	
 		}	
 	}
@@ -197,7 +201,7 @@ class Db_sql_operation {
 				String manu_regist_no = args[row_init][2];    // 사업자번호
 				String manu_pres_name = args[row_init][3];    // 대표자 이름
 				String manu_manager = args[row_init][4];      // 담당자 이름
-				String manu_tel = args[row_init][5];          // 전화번호
+				String manu_tel = args[row_init][5];          // 전화번호				
 				String manu_email = args[row_init][6];        // 이메일주소
 				String manu_homepage = args[row_init][7];     // 홈페이지 주소
 				String manu_addr_kr = args[row_init][8];      // 회사 주소(한글)
@@ -219,8 +223,7 @@ class Db_sql_operation {
 				String prod_name_kr = args[row_init][1];      // 상품명(한글)
 				String prod_name_eng = args[row_init][2];     // 상품명(영문)
 				String prod_desc_kr = args[row_init][3];      // 제품명(한글)
-				String prod_desc_eng = args[row_init][4];     // 제품명(영문)
-				System.out.println(args[row_init][5]);
+				String prod_desc_eng = args[row_init][4];     // 제품명(영문)				
 				double supply_price = Double.parseDouble(args[row_init][5]);      // 공급가액							
 				double retail_price = Double.parseDouble(args[row_init][6]);      // 소매가액
 				String entry_date = args[row_init][7];        // 입력일
