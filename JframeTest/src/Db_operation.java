@@ -18,54 +18,8 @@ public class Db_operation {
 	static int lport;
 	static String rhost;
 	static int rport;
-	
-	
-	
-	public static String sqlscript(String[][] args){
-		
-		int file_recognition = args[1].length;
-		
-		System.out.println(file_recognition);
-		
-		if(file_recognition==10){                  // FILE RECOGNITION이 10일때 회사정보 INSERT AND UPDATE
-			String manu_name_kr = args[1][0];      // 한글회사명
-			String manu_name_eng = args[1][1];     // 영문회사명
-		    String manu_regist_no = args[1][2];    // 사업자번호
-		    String manu_pres_name = args[1][3];    // 대표자 이름
-		    String manu_manager = args[1][4];      // 담당자 이름
-		    String manu_tel = args[1][5];          // 전화번호
-		    String manu_email = args[1][6];        // 이메일주소
-		    String manu_homepage = args[1][7];     // 홈페이지 주소
-		    String manu_addr_kr = args[1][8];      // 회사 주소(한글)
-		    String manu_addr_eng = args[1][9];     // 회사 주소(영문)
-		}else if(file_recognition==11){			   // FILE RECOGNITION이 11일때 제품정보 INSERT AND UPDATE
-			String manu_name_kr = args[1][0];      // 한글회사명
-			String prod_name_kr = args[1][1];      // 상품명(한글)
-			String prod_name_eng = args[1][2];     // 상품명(영문)
-			String prod_desc_kr = args[1][3];      // 제품명(한글)
-			String prod_desc_eng = args[1][4];     // 제품명(영문)
-			String supply_price = args[1][5];      // 공급가액
-			String retail_price = args[1][6];      // 소매가액
-			String entry_date = args[1][7];        // 입력일
-			String stock_amt = args[1][8];         // stock 개수
-			String manager_name = args[1][9];      // 관리자 아이디
-			String order_degree = args[1][10];     // 오더차수			
-		}
-		
-		/*
-		String [] insert_sql = new String[2];
-		insert_sql[0] = "INSERT INTO KBIZ_PRODUCT VALUES (" + null + ", " + "'" + args[1][0] + "', "+ args[1][15] + ", "+ "1" + args[1][10];
-		insert_sql[1] = ", "+ args[1][11] + ", '"+ args[1][14] + "', CURRENT_DATE(), 'NATASHIA');";
-		String sql_done = insert_sql[0] + insert_sql[1];
-		*/
-		String sql_done = "none";
-		return sql_done;		
-	}
-	
-	/* SSH connection Setup 
-	
-	*/
-	/*
+	 
+	/*  // SSH connection Setup
 	public static void connectSsh(){
 		String user = "root";
 		String password = "kbiz238";
@@ -108,19 +62,20 @@ public class Db_operation {
 	*/
 	
 	
-	public static void Db_connection(String[][] arg1){
+	public static Connection Db_connection(){
+		//String[][] arg1 dbconnection 안으로 들어가야함
 		//String dbUser = "ksohobh_tester";
 		//String dbPassword = "kbizlaoffice";
 		String dbUser = "ourcentury";
 	    String dbPassword = "eogus0417";
+	    Connection con = null;
 		System.out.println("테스트테스트");
 		
-	try {		
-		
+	try {
 		Class.forName("com.mysql.jdbc.Driver");
 		// String dbURL = "jdbc:mysql://localhost:3306/" + DBName;  // SSH사용시
 		String dbURL = "jdbc:mysql://162.202.97.156:3306/" + DBName + "?useSSL=false";
-		Connection con = DriverManager.getConnection(dbURL, dbUser, dbPassword);	
+		con = DriverManager.getConnection(dbURL, dbUser, dbPassword);	
 		System.out.println("Mysql DB Connection");
 		//String SQL = "Select 1 from dual";		 
 		//String SQL = args;
@@ -132,12 +87,34 @@ public class Db_operation {
 		//stmt.executeUpdate(SQL); update문 잠시 정지
 		
 		//ResultSet result = stmt.executeQuery(SQL);
+	
+		/*
+	     while(result.next())
+		{ 
+			System.out.print(result.getString(1) +"\t");
+			System.out.print(result.getString(1) +"\t");
+		}
+		*/
+		
+		//con.close();
+	}catch(Exception e){
+		JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);
+		
+		e.printStackTrace();	
+		}
+	return con;	
+	}
+	
+	// 인서트와 업데이트를 해주는 메소드 
+	public void Db_insert_data(String[][] args) throws SQLException{
+		
+		Connection con =  Db_connection();
 		Db_sql_operation dbinsert = new Db_sql_operation();
 		
 		// Company info인지 product info인지 구분해주는 파일 구분인자 및 최종 row_cnt
 		int row_init;
-		int file_recognition = arg1[1].length;
-		int row_cnt = arg1.length;
+		int file_recognition = args[1].length;
+		int row_cnt = args.length;
 		Statement stmt;
 		
 		// Delete Temp table
@@ -152,7 +129,7 @@ public class Db_operation {
 			}			
 		// Insert the data to temp table
 		for(row_init=2;row_init<row_cnt;row_init++){
-		CallableStatement cstmt = dbinsert.db_insert_update(con, arg1, file_recognition, row_init);		
+		CallableStatement cstmt = dbinsert.db_insert_update(con, args, file_recognition, row_init);		
 		cstmt.executeUpdate();
 		}
 		
@@ -163,38 +140,32 @@ public class Db_operation {
 		}else if(file_recognition==11){
 			CallableStatement cstmt = con.prepareCall("{Call IANDU_PRODUCT_TABLE}");
 			cstmt.executeUpdate();			   			   
-		}			
-		
-		
-		/*
-	     while(result.next())
-		{ 
-			System.out.print(result.getString(1) +"\t");
-			System.out.print(result.getString(1) +"\t");
 		}
-		*/
-		
 		con.close();
-		JOptionPane.showMessageDialog(null, "업데이트성공", "성공메세지", JOptionPane.INFORMATION_MESSAGE);
-		
-	}catch(Exception e){
-		JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);
-		
-		e.printStackTrace();	
-		}	
 	}
+	
 	
 	public Db_operation(String[][] args){
 		// connectSsh(); SSH 사용시
 		//String sql_done = sqlscript(args);
-		Db_connection(args);
+		//Db_connection();
+		try {
+			Db_insert_data(args);
+			JOptionPane.showMessageDialog(null, "업데이트성공", "성공메세지", JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);
+		}
 		
 	}
 	
 }
 
+// SQL 만드는 클래스 
 class Db_sql_operation {
 	
+	// Procedure calling 하는 callablestatement 만드는 메소드
 	public  CallableStatement db_insert_update(Connection con, String[][] args, int file_recognition, int row_init){          // db 인서트와 업데이트를 하는 구문	    
 		
 		CallableStatement cstmt = null;
@@ -255,6 +226,5 @@ class Db_sql_operation {
 		e.printStackTrace();
 	    }
 		return cstmt;
-		
-	}
+	}  // db_insert_update end 
 }

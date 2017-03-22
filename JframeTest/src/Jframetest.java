@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;	
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -60,6 +61,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
     private JButton download_info = new JButton("4. Download Info");
     private JButton tbd1 = new JButton("5. TBD1");
     private JButton tbd2 = new JButton("6. TBD2");
+    private JButton excel_dload_btn = new JButton("Excel Download");
+    private JButton srch_btn = new JButton("Search");
     
 	private JButton openButton = new JButton("Open");
 	private JButton saveButton = new JButton("Save");
@@ -171,70 +174,43 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		
 		JPanel label_panel = new JPanel();
 		
-		contentPane.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		//GridBagConstraints c1 = new GridBagConstraints();
-		//GridBagConstraints c2 = new GridBagConstraints();
+		GroupLayout g_layout = new GroupLayout(contentPane);
+		contentPane.setLayout(g_layout);
+		g_layout.setAutoCreateGaps(true) ;
+		g_layout.setAutoCreateContainerGaps(true);
+		
+		g_layout.setHorizontalGroup(
+				g_layout.createParallelGroup()				    
+				    .addComponent(logoPane)
+				    .addGroup(g_layout.createSequentialGroup()				    		
+				    	     .addComponent(jtxt_area))				    		
+                    .addGroup(g_layout.createSequentialGroup()				    				
+				    		.addComponent(initButton)
+				    		.addGap(250)
+				    		.addComponent(openButton)
+				    		.addComponent(saveButton))				    		
+				        );
+		g_layout.setVerticalGroup(
+				   g_layout.createSequentialGroup()
+				      .addComponent(logoPane)
+				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				           .addComponent(jtxt_area))
+				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				    	   .addComponent(initButton)  
+				           .addComponent(openButton)
+				           .addComponent(saveButton))
+				);
 		
 		
-	    //c.ipadx = 0;
-		c.fill = GridBagConstraints.FIRST_LINE_START;
-		c.anchor = GridBagConstraints.BASELINE_LEADING;		
-		c.gridx=0;
-		c.gridy=1;
-		c.gridwidth = 3;	
-		//c.gridheight = 3;
-		c.weightx = 0.7;
-	    c.weighty = 0.5;
-		//c.gridheight = 2;		
-		//c.gridwidth = 100;
 		
 	    jtxt_area.setText("파일선택 전입니다.");
 	    jtxt_area.setEditable(false);
 		label_panel.add(jtxt_area);		
-		contentPane.add(label_panel,c);
-		/*
-		c.gridx=1;
-		c.gridy=0;
-		c.gridwidth = 1;
-		contentPane.add(blank_panel,c);
-		*/
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
-		buttonPane.add(openButton);
-		buttonPane.add(saveButton);
-		buttonPane.setBackground(Color.white);
 		
 		openButton.addActionListener(this);
 		saveButton.addActionListener(this);
-		//buttonPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		//buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 0));
-		
-		/* init으로 돌아가는 버튼 */
-		init_btn_Panel.add(initButton);
 		initButton.addActionListener(this);
-		//c.anchor = GridBagConstraints.EAST;
 				
-		c.gridx=0;
-		c.gridy=2;
-		//c.ipadx = 3;
-		c.gridwidth = 1;	
-		c.weightx = 0.15;
-		c.weighty = 0.3;
-		//c.gridwidth = 0;
-				
-		//c.insets = new Insets(20,0,0,0);
-		contentPane.add(init_btn_Panel, c);
-		
-		//c.anchor = GridBagConstraints.LAST_LINE_END;		
-		c.gridx=2;
-		c.gridy=2;
-		c.gridwidth = 1;
-		//c.weightx = 0;
-		//c.gridwidth = 0;
-		//c.insets = new Insets(20,50,0,0);
-		
-		contentPane.add(buttonPane, c);
-		
 		jfc.setFileFilter(new FileNameExtensionFilter("xls", "xls"));
 		jfc.setMultiSelectionEnabled(false);
 		
@@ -248,8 +224,12 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		JCheckBox select_All = new JCheckBox("전체");
 		JCheckBox comp_info = new JCheckBox("회사정보");
 		JCheckBox product_info = new JCheckBox("상품정보");
-		JTextField comp_name_srch  = new JTextField();
-		JPanel group_panel = new JPanel();
+		JTextField comp_name_srch  = new JTextField("바보야바보야");
+		JPanel group_panel = new JPanel();		
+		
+	
+		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야어야디야어아ㅓㅁ리ㅏㅇ러ㅏㅣ머리ㅓㅏㅁㄹ");
+		JScrollPane textfield_panel = new JScrollPane(txtfield);
 		
 		GroupLayout g_layout = new GroupLayout(contentPane);
 		contentPane.setLayout(g_layout);
@@ -257,18 +237,30 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		g_layout.setAutoCreateContainerGaps(true);
 		
 		g_layout.setHorizontalGroup(
-				g_layout.createSequentialGroup()
-					.addComponent(comp)
-					.addComponent(select_All)
-					.addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(comp_info).addComponent(product_info)));
+				g_layout.createParallelGroup()				    
+				    .addComponent(textfield_panel)
+				    .addGroup(g_layout.createSequentialGroup()
+				    		.addComponent(comp)
+				    		.addComponent(comp_name_srch,50,150,150)				    		
+				    		.addComponent(select_All))
+				    .addGroup(g_layout.createSequentialGroup()				    				
+				    		.addComponent(comp_info)
+				    		.addComponent(product_info)
+				    		.addGap(300)
+				   			.addComponent(openButton))						    		 
+				    );
 		g_layout.setVerticalGroup(
 				   g_layout.createSequentialGroup()
+				      .addComponent(textfield_panel)
 				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				           .addComponent(comp)
+				           .addComponent(comp_name_srch)
 				           .addComponent(select_All))
-				      .addComponent(product_info)
-				      .addComponent(comp_info)
+				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				           .addComponent(product_info)
+				           .addComponent(comp_info)				           
+				           .addComponent(openButton))
+				           
 				);
 		
 		comp.setText("회사명 : ");
@@ -276,8 +268,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//JPanel textfield_panel = new JPanel();		
 		//contentPane.setLayout(new BorderLayout());
         //buttonPane.setLayout(new GridLayout());		
-		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야어야디야어아ㅓㅁ리ㅏㅇ러ㅏㅣ머리ㅓㅏㅁㄹ");
-		JScrollPane textfield_panel = new JScrollPane(txtfield);
+		
 		
 		//JTextField txtfield = new JTextField(1);
 		//textfield_panel.add(txtfield);
@@ -299,9 +290,34 @@ class  Jframe_Test extends JFrame implements ActionListener {
       	//	frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 	}
+	
+	public void Jframe_testing_textfield(){
+		Container cotentPane2 = new Container();
+		JFrame frame2 = new JFrame();
+		
+		cotentPane2 = frame2.getContentPane();
+		
+		cotentPane2.setLayout(new BorderLayout());
+		
+		JTextField comp_name_srch  = new JTextField("바보야바보야");
+		TextField comp_name_srch2 = new TextField("으라차차차");
+		
+		cotentPane2.add(comp_name_srch);
+		cotentPane2.add(comp_name_srch2, BorderLayout.CENTER);
+		frame2.setSize(800,600);
+		frame2.setVisible(true);
+
+		
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if (e.getSource() == tbd1){
+			String recog = "initial";
+			Jframe_empty(recog);
+			Jframe_testing_textfield();
+		}
 		/* 메뉴에서 업로드하는 메뉴를 선택 했을 때 */		
 		if (e.getSource() == upload_comp){			
 			String recog = "initial";
