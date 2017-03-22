@@ -224,11 +224,12 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		JCheckBox select_All = new JCheckBox("전체");
 		JCheckBox comp_info = new JCheckBox("회사정보");
 		JCheckBox product_info = new JCheckBox("상품정보");
-		JTextField comp_name_srch  = new JTextField("바보야바보야");
+		JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
+		JTextField comp_name_srch  = new JTextField("");
 		JPanel group_panel = new JPanel();		
 		
 	
-		JTextArea txtfield = new JTextArea("바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야바보야어야디야어아ㅓㅁ리ㅏㅇ러ㅏㅣ머리ㅓㅏㅁㄹ");
+		JTextArea txtfield = new JTextArea("");
 		JScrollPane textfield_panel = new JScrollPane(txtfield);
 		
 		GroupLayout g_layout = new GroupLayout(contentPane);
@@ -246,7 +247,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				    .addGroup(g_layout.createSequentialGroup()				    				
 				    		.addComponent(comp_info)
 				    		.addComponent(product_info)
-				    		.addGap(300)
+				    		.addComponent(pro_trans_history)
+				    		.addGap(430)
 				   			.addComponent(openButton))						    		 
 				    );
 		g_layout.setVerticalGroup(
@@ -258,7 +260,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				           .addComponent(select_All))
 				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				           .addComponent(product_info)
-				           .addComponent(comp_info)				           
+				           .addComponent(comp_info)
+				           .addComponent(pro_trans_history)
 				           .addComponent(openButton))
 				           
 				);
@@ -291,33 +294,9 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		
 	}
 	
-	public void Jframe_testing_textfield(){
-		Container cotentPane2 = new Container();
-		JFrame frame2 = new JFrame();
-		
-		cotentPane2 = frame2.getContentPane();
-		
-		cotentPane2.setLayout(new BorderLayout());
-		
-		JTextField comp_name_srch  = new JTextField("바보야바보야");
-		TextField comp_name_srch2 = new TextField("으라차차차");
-		
-		cotentPane2.add(comp_name_srch);
-		cotentPane2.add(comp_name_srch2, BorderLayout.CENTER);
-		frame2.setSize(800,600);
-		frame2.setVisible(true);
-
-		
-		
-	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource() == tbd1){
-			String recog = "initial";
-			Jframe_empty(recog);
-			Jframe_testing_textfield();
-		}
 		/* 메뉴에서 업로드하는 메뉴를 선택 했을 때 */		
 		if (e.getSource() == upload_comp){			
 			String recog = "initial";

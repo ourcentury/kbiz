@@ -24,14 +24,7 @@ public class excel_excutor {
 	public String[][] dataset_result;
 
 	public excel_excutor() throws IOException{
-		// args = "xls";	
-		System.out.println("여기입니다");
-		//xls_xlsx_writer xw = new xls_xlsx_writer(args);	
-		//xls_xlsx_reader xr = new xls_xlsx_reader(args);
-		System.out.println("여기입니다2");
-		// return this.dataset_result = xr.xls_reader();
-		//String[][] dataset_result = xls_xlsx_reader.xls_reader();	
-		//System.out.println(dataset_result[1][1]);
+		
 	}
 	
 	public String[][] excel_excutor_result(String args, String args1) throws IOException{
@@ -42,10 +35,8 @@ public class excel_excutor {
 		}else {
 			System.out.println("여기입니다4");
 			return this.dataset_result = xls_xlsx_reader.xlsx_reader(args1);				
-		}
-				
+		}		
 	}
-	
 }
 
 /* Excel File Writer Starts. It contains two types of excel file reader which are xls and xlsx.
