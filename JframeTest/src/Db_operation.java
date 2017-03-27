@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -122,7 +123,7 @@ public class Db_operation {
 			   stmt = con.createStatement();
 			   String SQL = "DELETE FROM KBIZ_MANUFACTURER_TEMP";
 			   stmt.executeUpdate(SQL);			   
-			}else if(file_recognition==11){
+			}else if(file_recognition==12){
 			   stmt = con.createStatement();
 			   String SQL = "DELETE FROM KBIZ_PRODUCT_TEMP";
 			   stmt.executeUpdate(SQL);			   
@@ -137,9 +138,11 @@ public class Db_operation {
 		if (file_recognition==10){
 			   CallableStatement cstmt = con.prepareCall("{Call IANDU_MANUFACTURER_TABLE}");
 			   cstmt.executeUpdate();			   			   
-		}else if(file_recognition==11){
-			CallableStatement cstmt = con.prepareCall("{Call IANDU_PRODUCT_TABLE}");
-			cstmt.executeUpdate();			   			   
+		}else if(file_recognition==12){
+			   CallableStatement cstmt = con.prepareCall("{Call IANDU_PRODUCT_TABLE}");
+			   cstmt.executeUpdate();
+			   CallableStatement cstmt1 = con.prepareCall("{Call IANDU_PRODUCT_POS}");
+			   cstmt1.executeUpdate();
 		}
 		con.close();
 	}
@@ -200,16 +203,17 @@ class Db_sql_operation {
 				String prod_name_kr = args[row_init][1];      // 상품명(한글)
 				String prod_name_eng = args[row_init][2];     // 상품명(영문)
 				String prod_desc_kr = args[row_init][3];      // 제품명(한글)
-				String prod_desc_eng = args[row_init][4];     // 제품명(영문)				
-				double supply_price = Double.parseDouble(args[row_init][5]);      // 공급가액							
-				double retail_price = Double.parseDouble(args[row_init][6]);      // 소매가액
+				String prod_desc_eng = args[row_init][4];     // 제품명(영문)
+				double supply_price = Double.parseDouble(nvl(args[row_init][5]));      // 공급가액							
+				double retail_price = Double.parseDouble(nvl(args[row_init][6]));      // 소매가액
 				String entry_date = args[row_init][7];        // 입력일
-				int stock_amt = (int)Double.parseDouble(args[row_init][8]);         // stock 개수
+				int stock_amt = (int)Double.parseDouble(nvl(args[row_init][8]));         // stock 개수
 				String manager_name = args[row_init][9];      // 관리자 아이디
-				int order_degree = (int)Double.parseDouble(args[row_init][10]);     // 오더차수
+				int order_degree = (int)Double.parseDouble(nvl(args[row_init][10]));     // 오더차수
 				String category_name = args[row_init][11]; // CATEGORY명
 				
 				cstmt = con.prepareCall("{Call insert_product_info_temp(?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y-%m-%d'),?,?,?,?)}");
+				
 				cstmt.setString(1,manu_name_kr);
 				cstmt.setString(2, prod_name_kr);
 				cstmt.setString(3, prod_name_eng);
@@ -228,5 +232,17 @@ class Db_sql_operation {
 		e.printStackTrace();
 	    }
 		return cstmt;
-	}  // db_insert_update end 
+	}  // db_insert_update end
+	
+	/* POS data mapping generator */ 
+	public void pos_bulk_up_list(Connection con){
+		
+	}
+	/* String에 null 일경우 숫자 0으로 리턴하는 메소드 */
+	public String nvl(String a){
+		if(a == null){
+			a ="0";
+		};
+		return a;
+	};// nvl end
 }

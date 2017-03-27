@@ -250,10 +250,12 @@ class xls_xlsx_reader {
 	}
 	
 	public static String[][] xlsx_reader(String file_path) throws IOException{
+		 	
 		FileInputStream fis=new FileInputStream(file_path);
-		XSSFWorkbook workbook=new XSSFWorkbook(fis);
 		int rowindex=0;
 		int columnindex=0;
+		XSSFWorkbook workbook=new XSSFWorkbook(fis);
+		
 		//시트 수 (첫번째에만 존재하므로 0을 준다)
 		//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
 		XSSFSheet sheet=workbook.getSheetAt(0);

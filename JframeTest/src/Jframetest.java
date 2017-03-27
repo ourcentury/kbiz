@@ -143,6 +143,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		contentPane.add(menuSelectPane, BorderLayout.SOUTH);
 		frame.setSize(500, 400);
 		
+		/* INITIATING ONLY */
 		if(init_type == 0){
 		//frame.setSize(500, 400);
 		frame.setVisible(true);
@@ -157,6 +158,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		openButton.addActionListener(this);
 		saveButton.addActionListener(this);
 		initButton.addActionListener(this);
+		srch_btn.addActionListener(this);
 		}		
 		 //frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
@@ -219,7 +221,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//saveButton.addActionListener(this);
 		//initButton.addActionListener(this);
 				
-		jfc.setFileFilter(new FileNameExtensionFilter("xls", "xls"));
+		jfc.setFileFilter(new FileNameExtensionFilter("xls & xlsx", "xls", "xlsx"));
 		jfc.setMultiSelectionEnabled(false);
 		
 		frame.invalidate();
@@ -258,7 +260,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				    		.addComponent(pro_trans_history)
 				    		.addGap(350)
 				    		.addComponent(initButton)
-				   			.addComponent(openButton))						    		 
+				   			.addComponent(srch_btn))						    		 
 				    );
 		g_layout.setVerticalGroup(
 				   g_layout.createSequentialGroup()
@@ -272,7 +274,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				           .addComponent(comp_info)
 				           .addComponent(pro_trans_history)
 				           .addComponent(initButton)
-				           .addComponent(openButton))
+				           .addComponent(srch_btn))
 				           
 				);
 		
