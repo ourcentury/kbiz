@@ -184,12 +184,11 @@ class xls_xlsx_reader {
 		// Verification for Product excel file or Company Excel File
 		HSSFRow row1 = sheet.getRow(0);
 		HSSFCell cell1 = row1.getCell(1);
-		String veri_value = cell1.getStringCellValue();		 
-		
+		String veri_value = cell1.getStringCellValue();
 		System.out.println(veri_value);
 		
 		if (veri_value.equals("File Verification:Product")){
-			no_of_col = 11; // 컬럼수 지정
+			no_of_col = 12; // 컬럼수 지정
 			}else if(veri_value.equals("File Verification:Company")){
 			no_of_col = 10; // 컬럼수 지정
 			}else{
@@ -268,7 +267,7 @@ class xls_xlsx_reader {
 		String veri_value = cell1.getStringCellValue();		
 		
 		if (veri_value.equals("File Verification:Product")){
-			no_of_col = 11; // 컬럼수 지정
+			no_of_col = 12; // 컬럼수 지정
 			}else if(veri_value.equals("File Verification:Company")){
 			no_of_col = 10; // 컬럼수 지정
 			}else{
@@ -278,42 +277,50 @@ class xls_xlsx_reader {
 		//행의 수		
 		String[][] dataset_temp = new String[rows][no_of_col]; // 엑셀에서 데이터를 담을 ARRAY
 		
-		for(rowindex=1;rowindex<rows;rowindex++){  // 첫번째 row ignore 
-		//행을읽는다
-			XSSFRow row=sheet.getRow(rowindex);
+		for(rowindex=2;rowindex<rows;rowindex++){ // 첫번째 row ignore 
+			XSSFRow row=sheet.getRow(rowindex); // 행 읽기
 			if(row !=null){
-				//셀의 수
-				int cells=row.getPhysicalNumberOfCells();
+				// int cells=row.getPhysicalNumberOfCells();				
+				// System.out.println(cells + "피지컬넘버셀" + "      "); //이부분 바꿔야함
 				// for(columnindex=0;columnindex<=cells;columnindex++){
-				for(columnindex=0;columnindex<=16;columnindex++){ //셀 값 고정
-					//셀값을 읽는다
-					XSSFCell cell=row.getCell(columnindex);
-					String value="";
-					//셀이 빈값일경우를 위한 널체크
-					if(cell==null){
+				for(columnindex=0;columnindex<no_of_col;columnindex++){ //셀 수 고정
+					XSSFCell cell=row.getCell(columnindex);									
+					String value=null; // 이곳에 엑셀 value가 쌓임					
+					  if(cell==null){
 						continue;
-					}else{
-						//타입별로 내용 읽기
+				      }else{
 						switch (cell.getCellType()){
-						case XSSFCell.CELL_TYPE_FORMULA:
+						case HSSFCell.CELL_TYPE_FORMULA:
 							value=cell.getCellFormula();
 							break;
-						case XSSFCell.CELL_TYPE_NUMERIC:
+						case HSSFCell.CELL_TYPE_NUMERIC:
 							value=cell.getNumericCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_STRING:
+						case HSSFCell.CELL_TYPE_STRING:
 							value=cell.getStringCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_BLANK:
+						case HSSFCell.CELL_TYPE_BLANK:
 							value=cell.getBooleanCellValue()+"";
 							break;
-						case XSSFCell.CELL_TYPE_ERROR:
+						case HSSFCell.CELL_TYPE_ERROR:
 							value=cell.getErrorCellValue()+"";
-							break;						
+							break;
+					     }
+						// System.out.println(rowindex + "행" + "열" + columnindex + "셀 내용 :"+value);
+						if(value.contains("\n")){
+							value = value.replace("\n", ";");
 						}
-					
-					}
+						dataset_temp[rowindex][columnindex] = value;  // 고쳐야함!!					    
+						
+						System.out.println("셀 내용 :"+ dataset_temp[rowindex][columnindex] + "길이 :" + dataset_temp[rowindex][columnindex].length());
+					 }  // if-else 문 끝					 					
 				}
+				/*
+				if (dataset_temp[rowindex][0] == null||dataset_temp[rowindex][no_of_col-1] == null){					
+					System.out.println("오류오류오루"); //오류메세지 출력
+			    	System.exit(1);					    	
+			    } // 데이터 적합성 테스트 row가 끝날때마다 함 */ 
+
 			}
 		}
 		workbook.close();

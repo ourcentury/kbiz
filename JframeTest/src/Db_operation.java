@@ -195,7 +195,7 @@ class Db_sql_operation {
 				cstmt.setString(8, manu_homepage);
 				cstmt.setString(9, manu_addr_kr);
 				cstmt.setString(10, manu_addr_eng);
-			}else if(file_recognition==11){			   // FILE RECOGNITION이 11일때 제품정보 INSERT AND UPDATE
+			}else if(file_recognition==12){			   // FILE RECOGNITION이 11일때 제품정보 INSERT AND UPDATE
 				String manu_name_kr = args[row_init][0];      // 한글회사명
 				String prod_name_kr = args[row_init][1];      // 상품명(한글)
 				String prod_name_eng = args[row_init][2];     // 상품명(영문)
@@ -207,8 +207,9 @@ class Db_sql_operation {
 				int stock_amt = (int)Double.parseDouble(args[row_init][8]);         // stock 개수
 				String manager_name = args[row_init][9];      // 관리자 아이디
 				int order_degree = (int)Double.parseDouble(args[row_init][10]);     // 오더차수
+				String category_name = args[row_init][11]; // CATEGORY명
 				
-				cstmt = con.prepareCall("{Call insert_product_info_temp(?,?,?,?,?,?,?,STR_TO_DATE(?,'%m/%d/%Y'),?,?,?)}");
+				cstmt = con.prepareCall("{Call insert_product_info_temp(?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y-%m-%d'),?,?,?,?)}");
 				cstmt.setString(1,manu_name_kr);
 				cstmt.setString(2, prod_name_kr);
 				cstmt.setString(3, prod_name_eng);
@@ -220,6 +221,7 @@ class Db_sql_operation {
 				cstmt.setInt(9, stock_amt);
 				cstmt.setString(10, manager_name);
 				cstmt.setInt(11, order_degree);
+				cstmt.setString(12, category_name);
 			}		
 	    } catch (SQLException e) {
 		// TODO Auto-generated catch block

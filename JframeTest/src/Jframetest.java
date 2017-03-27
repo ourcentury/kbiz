@@ -20,7 +20,7 @@ import javax.swing.filechooser.*;
 public class Jframetest {			
 	public static void main(String[] args) throws IOException{
 	     Jframe_Test jt = new Jframe_Test();
-	     jt.Jframe_initial();
+	     jt.Jframe_initial(0);
 	    
 	     
 	    //Jframe_Test jt2 = new Jframe_Test();
@@ -74,7 +74,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private Container contentPane = frame.getContentPane();
 	
 	public String[][] temp;
-	String file_extender;
+	String file_extender;	
+	
 	
 	public Jframe_Test() {
 	     
@@ -109,7 +110,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	}
 	
 	/* 초기화면 만들기 */
-	public void Jframe_initial(){
+	public void Jframe_initial(int init_type){
 		/*
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -138,20 +139,25 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		menuSelectPane.add(tbd1);
 		menuSelectPane.add(tbd2);
 		
+		contentPane.add(logoPane, BorderLayout.CENTER);
+		contentPane.add(menuSelectPane, BorderLayout.SOUTH);
+		frame.setSize(500, 400);
+		
+		if(init_type == 0){
+		//frame.setSize(500, 400);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		upload_comp.addActionListener(this);
 		upload_product.addActionListener(this);
 		upload_transaction.addActionListener(this);
 		download_info.addActionListener(this);
 		tbd1.addActionListener(this);
 		tbd2.addActionListener(this);
-		
-		contentPane.add(logoPane, BorderLayout.CENTER);
-		contentPane.add(menuSelectPane, BorderLayout.SOUTH);
-	   	 
-		frame.setSize(500, 400);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		openButton.addActionListener(this);
+		saveButton.addActionListener(this);
+		initButton.addActionListener(this);
+		}		
 		 //frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
 	}
@@ -170,8 +176,10 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	   //frame.repaint();
 	   
 	}
-	public void Jframe_upload(){
+	public void Jframe_upload(int upload_type){
 		
+		
+		System.out.println("upload type : " + upload_type);
 		JPanel label_panel = new JPanel();
 		
 		GroupLayout g_layout = new GroupLayout(contentPane);
@@ -207,16 +215,16 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	    jtxt_area.setEditable(false);
 		label_panel.add(jtxt_area);		
 		
-		openButton.addActionListener(this);
-		saveButton.addActionListener(this);
-		initButton.addActionListener(this);
+		//openButton.addActionListener(this);
+		//saveButton.addActionListener(this);
+		//initButton.addActionListener(this);
 				
 		jfc.setFileFilter(new FileNameExtensionFilter("xls", "xls"));
 		jfc.setMultiSelectionEnabled(false);
 		
 		frame.invalidate();
 		frame.validate();
-		frame.repaint();
+		frame.repaint();		
 
 	};
 	public void Jframe_download(){
@@ -248,7 +256,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				    		.addComponent(comp_info)
 				    		.addComponent(product_info)
 				    		.addComponent(pro_trans_history)
-				    		.addGap(430)
+				    		.addGap(350)
+				    		.addComponent(initButton)
 				   			.addComponent(openButton))						    		 
 				    );
 		g_layout.setVerticalGroup(
@@ -262,6 +271,7 @@ class  Jframe_Test extends JFrame implements ActionListener {
 				           .addComponent(product_info)
 				           .addComponent(comp_info)
 				           .addComponent(pro_trans_history)
+				           .addComponent(initButton)
 				           .addComponent(openButton))
 				           
 				);
@@ -297,14 +307,28 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		/* 메뉴에서 업로드하는 메뉴를 선택 했을 때 */		
+		/* 메뉴에서 회사정보 업로드하는 메뉴를 선택 했을 때 */		
 		if (e.getSource() == upload_comp){			
 			String recog = "initial";
 			Jframe_empty(recog);
-			System.out.println("1");
-			Jframe_upload();
-			System.out.println("@");
+			System.out.println("1");			
+			Jframe_upload(1);			
 		}
+		/* 메뉴에서 상품정보 업로드하는 메뉴를 선택 했을 때 */		
+		if (e.getSource() == upload_product){			
+			String recog = "initial";
+			Jframe_empty(recog);
+			System.out.println("2");			
+			Jframe_upload(2);			
+		}
+		/* 메뉴에서 트랜잭션 업로드하는 메뉴를 선택 했을 때 */
+		if (e.getSource() == upload_transaction){			
+			String recog = "initial";
+			Jframe_empty(recog);
+			System.out.println("3");			
+			Jframe_upload(3);			
+		}
+		
 		/* 메뉴에서 서치하는 메뉴를 선택 했을 때 */
 		if (e.getSource() == download_info){
 			String recog = "initial";
@@ -316,7 +340,8 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		if (e.getSource() == initButton){
 			String recog = "initial";
 			Jframe_empty(recog);
-			Jframe_initial();
+			System.out.println("@@");			
+			Jframe_initial(1);
 			System.out.println("!!");
 			
 		}
