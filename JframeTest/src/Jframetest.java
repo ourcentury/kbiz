@@ -145,21 +145,21 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		
 		/* INITIATING ONLY */
 		if(init_type == 0){
-		//frame.setSize(500, 400);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		upload_comp.addActionListener(this);
-		upload_product.addActionListener(this);
-		upload_transaction.addActionListener(this);
-		download_info.addActionListener(this);
-		tbd1.addActionListener(this);
-		tbd2.addActionListener(this);
-		openButton.addActionListener(this);
-		saveButton.addActionListener(this);
-		initButton.addActionListener(this);
-		srch_btn.addActionListener(this);
-		}		
+			//frame.setSize(500, 400);
+			frame.setVisible(true);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			upload_comp.addActionListener(this);
+			upload_product.addActionListener(this);
+			upload_transaction.addActionListener(this);
+			download_info.addActionListener(this);
+			tbd1.addActionListener(this);
+			tbd2.addActionListener(this);
+			openButton.addActionListener(this);
+			saveButton.addActionListener(this);
+			initButton.addActionListener(this);
+			srch_btn.addActionListener(this);
+			}		
 		 //frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
 	}
@@ -338,6 +338,13 @@ class  Jframe_Test extends JFrame implements ActionListener {
 			Jframe_download();
 			System.out.println("$$");			
 		}
+		/* 메뉴에서 서치하는 메뉴를 선택 했을 때 */
+		if (e.getSource() == tbd1){
+			String recog = "initial";
+			Db_operation dbo = new Db_operation();
+			dbo.Db_operate1();			
+			System.out.println("$$");			
+		}
 		/* 홈버튼 메뉴 선택 */		
 		if (e.getSource() == initButton){
 			String recog = "initial";
@@ -377,7 +384,9 @@ class  Jframe_Test extends JFrame implements ActionListener {
 					excel_excutor ec = new excel_excutor();
 					temp = ec.excel_excutor_result(file_extender,file_addr);
 					
-					Db_operation dbo = new Db_operation(temp);
+					Db_operation dbo = new Db_operation();
+					dbo.Db_operate(temp);
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

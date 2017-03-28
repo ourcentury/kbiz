@@ -1,5 +1,9 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -147,19 +151,35 @@ public class Db_operation {
 		con.close();
 	}
 	
+	public void Db_operate1(){
+		Db_sql_operation dbselect = new Db_sql_operation();
+		Connection con = Db_connection();
+		try {
+			dbselect.pos_bulk_up_list(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
-	public Db_operation(String[][] args){
-		// connectSsh(); SSH 사용시
-		//String sql_done = sqlscript(args);
-		//Db_connection();
+	public void Db_operate(String[][] args){
+		
 		try {
 			Db_insert_data(args);
+			
 			JOptionPane.showMessageDialog(null, "업데이트성공", "성공메세지", JOptionPane.INFORMATION_MESSAGE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e, "경고입니다", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	public Db_operation(){
+		// connectSsh(); SSH 사용시
+		//String sql_done = sqlscript(args);
+		//Db_connection();
+		
 		
 	}
 	
@@ -235,7 +255,57 @@ class Db_sql_operation {
 	}  // db_insert_update end
 	
 	/* POS data mapping generator */ 
-	public void pos_bulk_up_list(Connection con){
+	public void pos_bulk_up_list(Connection con) throws SQLException{
+		
+		Map<String, Object> map = null;		
+		CallableStatement cstmt = con.prepareCall("{Call EXCEL_BULK_GEN}");
+		ResultSet rs = cstmt.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int column_cnt = rsmd.getColumnCount();		
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		ArrayList<String> columnlist = new ArrayList<String>();
+		
+		for(int i=1;i<=column_cnt;i++){
+			columnlist.add(rsmd.getColumnName(i)); 
+		}
+		while(rs.next()){
+			map=new HashMap<String,Object>();
+			for(int i=1;i<=column_cnt;i++){
+				map.put(rsmd.getColumnName(i),rs.getString(i));				
+			}
+		   list.add(map);		   
+		}
+		
+		System.out.println("리스트 사이즈 : " + list.size());
+		System.out.println("리스트 사이즈 : " + list.get(0));
+		HashMap<String, Object> takemap = (HashMap<String, Object>)list.get(0);
+		
+		System.out.println(takemap.get("BARCODE_NO"));
+		String testing1 = takemap.toString();
+		Collection<Object> values = takemap.values();
+		String values1 = values.toString();
+		
+		System.out.println(values1);
+		
+		//System.out.println("리스트 사이즈 : " + );
+		
+		
+		//ArrayList<Array> ary = new ArrayList<>(Arrays.asList(rs.getArray(1)));
+		
+		
+		//String abc = z.toString();
+		//System.out.println(abc.length());
+		//System.out.println(ary.get(1));
+		
+				
+		
+		//System.out.println(rs.getArray(1));
+		
+		//System.out.println("컬럼갯수: " + rsmd.getColumnCount());
+		//System.out.println("컬럼갯수: " + rsmd.getColumnName(1));
+		
+		
+		con.close();		
 		
 	}
 	/* String에 null 일경우 숫자 0으로 리턴하는 메소드 */
