@@ -254,6 +254,30 @@ class Db_sql_operation {
 		return cstmt;
 	}  // db_insert_update end
 	
+	/* Select 결과문 map에 담기 */
+	public void select_map_gen(Connection con) throws SQLException {
+		
+		Map<String, Object> map = null;		
+		CallableStatement cstmt = con.prepareCall("{Call EXCEL_BULK_GEN}");
+		ResultSet rs = cstmt.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int column_cnt = rsmd.getColumnCount();		
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		ArrayList<String> columnlist = new ArrayList<String>();
+		
+		for(int i=1;i<=column_cnt;i++){
+			columnlist.add(rsmd.getColumnName(i)); 
+		}
+		while(rs.next()){
+			map=new HashMap<String,Object>();
+			for(int i=1;i<=column_cnt;i++){
+				map.put(rsmd.getColumnName(i),rs.getString(i));				
+			}
+		   list.add(map);		   
+		}
+		
+	}
+	
 	/* POS data mapping generator */ 
 	public void pos_bulk_up_list(Connection con) throws SQLException{
 		
@@ -275,35 +299,32 @@ class Db_sql_operation {
 			}
 		   list.add(map);		   
 		}
-		
+		/*
+		HashMap<String, Object> takemap = (HashMap<String, Object>)list.get(0);
 		System.out.println("리스트 사이즈 : " + list.size());
 		System.out.println("리스트 사이즈 : " + list.get(0));
-		HashMap<String, Object> takemap = (HashMap<String, Object>)list.get(0);
+		
 		
 		System.out.println(takemap.get("BARCODE_NO"));
 		String testing1 = takemap.toString();
 		Collection<Object> values = takemap.values();
+		Collection<String> keys = takemap.keySet();
 		String values1 = values.toString();
 		
+		String clst = columnlist.get(0);
+		
 		System.out.println(values1);
+		System.out.println(keys);
+		System.out.println(columnlist.size());
+        */
 		
-		//System.out.println("리스트 사이즈 : " + );
-		
-		
-		//ArrayList<Array> ary = new ArrayList<>(Arrays.asList(rs.getArray(1)));
-		
-		
-		//String abc = z.toString();
-		//System.out.println(abc.length());
-		//System.out.println(ary.get(1));
-		
-				
-		
-		//System.out.println(rs.getArray(1));
-		
-		//System.out.println("컬럼갯수: " + rsmd.getColumnCount());
-		//System.out.println("컬럼갯수: " + rsmd.getColumnName(1));
-		
+		Object[][] res_Set = new String[list.size()][column_cnt];        
+		for(int i=0; i<list.size();i++){
+			HashMap<String, Object> tempmap = (HashMap<String, Object>)list.get(i);
+			for(int j=0; j<column_cnt;j++){
+				res_Set[i][j] = tempmap.get(columnlist.get(j));
+			}
+		}
 		
 		con.close();		
 		

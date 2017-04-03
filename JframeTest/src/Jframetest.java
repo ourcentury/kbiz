@@ -11,6 +11,8 @@ import java.awt.Insets;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;	
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -43,7 +45,7 @@ public class Jframetest {
 		
 	}
 }
-class  Jframe_Test extends JFrame implements ActionListener {
+class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
     
 	private JFrame frame = new JFrame();
 	private JFrame frame1 = new JFrame();
@@ -72,6 +74,11 @@ class  Jframe_Test extends JFrame implements ActionListener {
 	private JButton info_download = new JButton("3.Download Information");
 	private GridLayout experimetalLayout = new GridLayout(2,1);
 	private Container contentPane = frame.getContentPane();
+	
+	private JCheckBox select_All = new JCheckBox("전체");
+	private JCheckBox comp_info = new JCheckBox("회사정보");
+	private JCheckBox product_info = new JCheckBox("상품정보");
+	private JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
 	
 	public String[][] temp;
 	String file_extender;	
@@ -159,6 +166,12 @@ class  Jframe_Test extends JFrame implements ActionListener {
 			saveButton.addActionListener(this);
 			initButton.addActionListener(this);
 			srch_btn.addActionListener(this);
+			
+			/* 아이템리스너 넣기 */
+		    select_All.addItemListener(this);
+		    comp_info.addItemListener(this);
+		    product_info.addItemListener(this);
+		    pro_trans_history.addItemListener(this);
 			}		
 		 //frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
@@ -229,16 +242,12 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		frame.repaint();		
 
 	};
-	public void Jframe_download(){
-		JLabel comp = new JLabel(); //회사정보 검색 레이블
-		JCheckBox select_All = new JCheckBox("전체");
-		JCheckBox comp_info = new JCheckBox("회사정보");
-		JCheckBox product_info = new JCheckBox("상품정보");
-		JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
+	public void Jframe_download() {
+		JLabel comp = new JLabel(); //회사정보 검색 레이블		
 		JTextField comp_name_srch  = new JTextField("");
 		JPanel group_panel = new JPanel();		
 		
-	
+		
 		JTextArea txtfield = new JTextArea("");
 		JScrollPane textfield_panel = new JScrollPane(txtfield);
 		
@@ -280,6 +289,15 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		
 		comp.setText("회사명 : ");
 		
+		ItemListener listner = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
+		
 		//JPanel textfield_panel = new JPanel();		
 		//contentPane.setLayout(new BorderLayout());
         //buttonPane.setLayout(new GridLayout());		
@@ -303,6 +321,22 @@ class  Jframe_Test extends JFrame implements ActionListener {
 		//frame1.setVisible(true);
 		//frame1.setSize(500, 500);
       	//	frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+	}
+	
+	public void itemStateChanged(ItemEvent e){
+		if(e.getSource() == select_All){
+			System.out.println(e.getStateChange());
+		}
+		if(e.getSource() == comp_info){
+			System.out.println(e.getStateChange());
+		}
+		if(e.getSource() == product_info){
+			System.out.println(e.getStateChange());
+		}
+		if(e.getSource() == pro_trans_history){
+			System.out.println(e.getStateChange());
+		}
 		
 	}
 	
@@ -354,6 +388,13 @@ class  Jframe_Test extends JFrame implements ActionListener {
 			System.out.println("!!");
 			
 		}
+		/* Search button 메뉴 선택 */		
+		if (e.getSource() == srch_btn){
+			System.out.println(select_All.isSelected());
+			select_All.isSelected();
+			
+		}
+		
 		/* 오픈 버튼 선택시 */
 		if (e.getSource() == openButton){
 			if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
