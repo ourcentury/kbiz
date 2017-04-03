@@ -276,6 +276,16 @@ class Db_sql_operation {
 		   list.add(map);		   
 		}
 		
+		Object[][] res_Set = new String[list.size()][column_cnt];        
+		for(int i=0; i<list.size();i++){
+			HashMap<String, Object> tempmap = (HashMap<String, Object>)list.get(i);
+			for(int j=0; j<column_cnt;j++){
+				res_Set[i][j] = tempmap.get(columnlist.get(j));
+			}
+		}
+		
+		con.close();		
+		
 	}
 	
 	/* POS data mapping generator */ 

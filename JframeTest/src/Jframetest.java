@@ -79,6 +79,7 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 	private JCheckBox comp_info = new JCheckBox("회사정보");
 	private JCheckBox product_info = new JCheckBox("상품정보");
 	private JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
+	private JTextField comp_name_srch  = new JTextField("");
 	
 	public String[][] temp;
 	String file_extender;	
@@ -244,7 +245,7 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 	};
 	public void Jframe_download() {
 		JLabel comp = new JLabel(); //회사정보 검색 레이블		
-		JTextField comp_name_srch  = new JTextField("");
+		
 		JPanel group_panel = new JPanel();		
 		
 		
@@ -324,9 +325,17 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 		
 	}
 	
+	@Override
 	public void itemStateChanged(ItemEvent e){
+		// when select select_all company
 		if(e.getSource() == select_All){
 			System.out.println(e.getStateChange());
+			if(e.getStateChange() == 1){
+				comp_name_srch.setText("");
+				comp_name_srch.setEditable(false);
+			} else{
+				comp_name_srch.setEditable(true);
+			}
 		}
 		if(e.getSource() == comp_info){
 			System.out.println(e.getStateChange());
@@ -390,8 +399,29 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 		}
 		/* Search button 메뉴 선택 */		
 		if (e.getSource() == srch_btn){
-			System.out.println(select_All.isSelected());
-			select_All.isSelected();
+			// parameter setting for stored procedure. 
+			String srch_recog;			
+			if(select_All.isSelected()){
+				srch_recog = "1";
+			} else {
+				srch_recog = "2";
+			}
+			if(comp_info.isSelected()){
+				srch_recog = srch_recog + "1";
+			} else {
+				srch_recog = srch_recog + "2";
+			}
+			if(product_info.isSelected()){
+				srch_recog = srch_recog + "1";
+			} else {
+				srch_recog = srch_recog + "2";
+			}
+			if(pro_trans_history.isSelected()){
+				srch_recog = srch_recog + "1";
+			} else {
+				srch_recog = srch_recog + "2";
+			}
+			
 			
 		}
 		
