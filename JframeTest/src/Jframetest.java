@@ -421,7 +421,12 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 			} else {
 				srch_recog = srch_recog + "2";
 			}
-			
+			//&& comp_name_srch.getText() == ""
+			if(srch_recog.substring(0,1).equals("2") && comp_name_srch.getText().equals("")){
+				JOptionPane.showMessageDialog(null, "회사명을 입력하거나 전체 선택을 해주세요.", "회사명 입력오류.", JOptionPane.ERROR_MESSAGE);
+				
+			}
+			System.out.println(srch_recog.substring(0, 1));
 			
 		}
 		

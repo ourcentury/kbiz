@@ -185,7 +185,11 @@ public class Db_operation {
 	
 }
 
-// SQL 만드는 클래스 
+// ************************************SQL 만드는 클래스***********************************************//
+// ************************************            ***********************************************//
+//************************************            ***********************************************//
+//************************************            ***********************************************//
+//************************************            ***********************************************//
 class Db_sql_operation {
 	
 	// Procedure calling 하는 callablestatement 만드는 메소드
@@ -255,10 +259,21 @@ class Db_sql_operation {
 	}  // db_insert_update end
 	
 	/* Select 결과문 map에 담기 */
-	public void select_map_gen(Connection con) throws SQLException {
+	public void select_map_gen(Connection con, String proc_type, String srch_recog, String comp_name) throws SQLException {
 		
+		CallableStatement cstmt = null;
 		Map<String, Object> map = null;		
-		CallableStatement cstmt = con.prepareCall("{Call EXCEL_BULK_GEN}");
+		
+		// calling proper procedure by procedure type  
+		if(proc_type.equals("pos_bulk")){
+			cstmt = con.prepareCall("{Call EXCEL_BULK_GEN}");	
+		} else if(proc_type.equals("search_info")){
+			cstmt = con.prepareCall("{Call SRCH_COMP_PRODUCT(?,?)}");
+			cstmt.setString(1, srch_recog);
+			cstmt.setString(2, comp_name);
+		}
+		
+		
 		ResultSet rs = cstmt.executeQuery();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int column_cnt = rsmd.getColumnCount();		
