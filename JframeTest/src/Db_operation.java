@@ -162,6 +162,19 @@ public class Db_operation {
 		}
 		
 	}
+	// select statement execution 
+	public Object[] Db_select(String proc_type, String srch_recog, String comp_name){
+		Db_sql_operation dbselect = new Db_sql_operation();
+		Connection con = Db_connection();
+		Object[] result = null;
+		try {
+			result = dbselect.select_map_gen(con, proc_type, srch_recog, comp_name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	public void Db_operate(String[][] args){
 		
@@ -259,7 +272,7 @@ class Db_sql_operation {
 	}  // db_insert_update end
 	
 	/* Select 결과문 map에 담기 */
-	public void select_map_gen(Connection con, String proc_type, String srch_recog, String comp_name) throws SQLException {
+	public Object[] select_map_gen(Connection con, String proc_type, String srch_recog, String comp_name) throws SQLException {
 		
 		CallableStatement cstmt = null;
 		Map<String, Object> map = null;		
@@ -268,17 +281,21 @@ class Db_sql_operation {
 		if(proc_type.equals("pos_bulk")){
 			cstmt = con.prepareCall("{Call EXCEL_BULK_GEN}");	
 		} else if(proc_type.equals("search_info")){
-			cstmt = con.prepareCall("{Call SRCH_COMP_PRODUCT(?,?)}");
+			cstmt = con.prepareCall("{Call SRCH_COMP_PRODUCT(?,?)}");			
 			cstmt.setString(1, srch_recog);
 			cstmt.setString(2, comp_name);
 		}
 		
+		Object[] list_and_column = new Object[2];
 		
+		System.out.println(cstmt);
 		ResultSet rs = cstmt.executeQuery();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int column_cnt = rsmd.getColumnCount();		
 		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		ArrayList<String> columnlist = new ArrayList<String>();
+		
+		
 		
 		for(int i=1;i<=column_cnt;i++){
 			columnlist.add(rsmd.getColumnName(i)); 
@@ -291,15 +308,11 @@ class Db_sql_operation {
 		   list.add(map);		   
 		}
 		
-		Object[][] res_Set = new String[list.size()][column_cnt];        
-		for(int i=0; i<list.size();i++){
-			HashMap<String, Object> tempmap = (HashMap<String, Object>)list.get(i);
-			for(int j=0; j<column_cnt;j++){
-				res_Set[i][j] = tempmap.get(columnlist.get(j));
-			}
-		}
+		list_and_column[0] = list;
+		list_and_column[1] = columnlist;
 		
-		con.close();		
+		con.close();
+		return list_and_column;
 		
 	}
 	
@@ -342,19 +355,26 @@ class Db_sql_operation {
 		System.out.println(keys);
 		System.out.println(columnlist.size());
         */
-		
-		Object[][] res_Set = new String[list.size()][column_cnt];        
-		for(int i=0; i<list.size();i++){
-			HashMap<String, Object> tempmap = (HashMap<String, Object>)list.get(i);
-			for(int j=0; j<column_cnt;j++){
-				res_Set[i][j] = tempmap.get(columnlist.get(j));
-			}
-		}
-		
+			
 		con.close();		
 		
 	}
-	/* String에 null 일경우 숫자 0으로 리턴하는 메소드 */
+	// ArrayLists converts to Object[][]
+	public Object[][] arraylist_to_object(ArrayList<Map<String, Object>> lists_in, ArrayList<String> columnlist_in){
+		
+		int column_cnt = columnlist_in.size();
+		Object[][] res_Set = new String[lists_in.size()][column_cnt];        
+		for(int i=0; i<lists_in.size();i++){
+			HashMap<String, Object> tempmap = (HashMap<String, Object>)lists_in.get(i);
+			for(int j=0; j<column_cnt;j++){
+				res_Set[i][j] = tempmap.get(columnlist_in.get(j));
+			}
+		}
+		
+		return res_Set;
+		
+	}
+	// String에 null 일경우 숫자 0으로 리턴하는 메소드
 	public String nvl(String a){
 		if(a == null){
 			a ="0";

@@ -421,12 +421,17 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 			} else {
 				srch_recog = srch_recog + "2";
 			}
-			//&& comp_name_srch.getText() == ""
-			if(srch_recog.substring(0,1).equals("2") && comp_name_srch.getText().equals("")){
+			String comp_name = comp_name_srch.getText();
+			if(srch_recog.substring(0,1).equals("2") && comp_name_srch.equals("")){
 				JOptionPane.showMessageDialog(null, "회사명을 입력하거나 전체 선택을 해주세요.", "회사명 입력오류.", JOptionPane.ERROR_MESSAGE);
-				
 			}
-			System.out.println(srch_recog.substring(0, 1));
+			Db_operation dbo = new Db_operation();
+			// select 문 실행
+			System.out.println(srch_recog + "회사명 : " +comp_name);
+			Object[] sel_result = dbo.Db_select("search_info", srch_recog, comp_name);
+			
+			
+			System.out.println(sel_result[1]);
 			
 		}
 		
