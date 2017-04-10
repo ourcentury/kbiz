@@ -16,10 +16,12 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.filechooser.*;
+import javax.swing.table.TableModel;
 
 public class Jframetest {			
 	public static void main(String[] args) throws IOException{
@@ -65,8 +67,9 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
     private JButton download_info = new JButton("4. Download Info");
     private JButton tbd1 = new JButton("5. TBD1");
     private JButton tbd2 = new JButton("6. TBD2");
-    private JButton excel_dload_btn = new JButton("Excel Download");
+//    private JButton excel_dload_btn = new JButton("Excel Download");
     private JButton srch_btn = new JButton("Search");
+    private JButton excel_export = new JButton("Excel");
     
 	private JButton openButton = new JButton("Open");
 	private JButton saveButton = new JButton("Save");
@@ -82,7 +85,8 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 	private JCheckBox product_info = new JCheckBox("상품정보");
 	private JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
 	private JTextField comp_name_srch  = new JTextField("");
-	private JScrollPane textfield_panel = new JScrollPane();	
+	private JScrollPane textfield_panel = new JScrollPane();
+	private JTable jt = new JTable();
 	public String[][] temp;
 	String file_extender;	
 	
@@ -169,6 +173,7 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 			saveButton.addActionListener(this);
 			initButton.addActionListener(this);
 			srch_btn.addActionListener(this);
+			excel_export.addActionListener(this);
 			
 			/* 아이템리스너 넣기 */
 		    select_All.addItemListener(this);
@@ -262,7 +267,9 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 				    .addGroup(g_layout.createSequentialGroup()
 				    		.addComponent(comp)
 				    		.addComponent(comp_name_srch,50,150,150)				    		
-				    		.addComponent(select_All))
+				    		.addComponent(select_All)
+				    		.addGap(417)
+				    		.addComponent(excel_export, 50, 75, 75))				            
 				    .addGroup(g_layout.createSequentialGroup()				    				
 				    		.addComponent(comp_info)
 				    		.addComponent(product_info)
@@ -277,7 +284,8 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				           .addComponent(comp)
 				           .addComponent(comp_name_srch)
-				           .addComponent(select_All))
+				           .addComponent(select_All)
+				           .addComponent(excel_export))				           
 				      .addGroup(g_layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				           .addComponent(product_info)
 				           .addComponent(comp_info)
@@ -298,6 +306,13 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 			
 		};
 		
+		if (textfield_panel.getColumnHeader() == null){
+			excel_export.setEnabled(false);
+			System.out.println("1번입니다");
+		} else {
+			excel_export.setEnabled(true);
+			System.out.println("2번입니다");
+		}
 		//JPanel textfield_panel = new JPanel();		
 		//contentPane.setLayout(new BorderLayout());
         //buttonPane.setLayout(new GridLayout());		
@@ -448,15 +463,45 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 				
 			System.arraycopy(sel_result, 1, data, 0, row_cnt-1);
 			
-			JTable jt = new JTable(data, column_list);		
+			jt = new JTable(data, column_list);		
 			jt.doLayout();
 			textfield_panel = new JScrollPane(jt);
-			textfield_panel.createVerticalScrollBar();
+			textfield_panel.createHorizontalScrollBar();
 			
 			textfield_panel.setPreferredSize(getPreferredSize());
 			Jframe_empty("initial");
 			Jframe_download();
 			
+			
+		}
+		/* excel 선택시 */
+		if (e.getSource() == excel_export){
+			TableModel temp_model = jt.getModel();
+			
+			HashMap<String, Object> map = null;
+			ArrayList<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+			ArrayList<String> columnList=new ArrayList<String>();
+			
+			int col_cnt = temp_model.getColumnCount();
+			int row_cnt = temp_model.getRowCount();
+			for (int i=0;i<col_cnt;i++){
+				columnList.add(temp_model.getColumnName(i));
+			};
+			
+			for(int i=0;i<row_cnt;i++){
+				map = new HashMap<String, Object>();
+				for(int j=0;j<col_cnt;j++){
+					map.put(temp_model.getColumnName(j), temp_model.getValueAt(i, j));
+				}
+				list.add(map);
+			}
+			try {
+				excel_excutor et = new excel_excutor();
+				et.excel_writer(list, columnList);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 		}
 		

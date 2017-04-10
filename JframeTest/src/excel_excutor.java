@@ -37,6 +37,17 @@ public class excel_excutor {
 			return this.dataset_result = xls_xlsx_reader.xlsx_reader(args1);				
 		}		
 	}
+	// Excel export execution
+	public void excel_writer(ArrayList<Map<String,Object>> list, ArrayList<String> columnList){
+		try {
+			xls_xlsx_writer.common_writer(list, columnList);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
 
 /* Excel File Writer Starts. It contains two types of excel file reader which are xls and xlsx.
@@ -48,19 +59,26 @@ class xls_xlsx_writer {
 	    //임의의 VO가 되주는 MAP 객체
 		Map<String,Object>map=null;
 		//가상 DB조회후 목록을 담을 LIST객체
-		ArrayList<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
-		ArrayList<String> columnList=new ArrayList<String>();
+		static ArrayList<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+		static ArrayList<String> columnList=new ArrayList<String>();
 		
-		public xls_xlsx_writer(String args) throws IOException {
-			common_writer();
-			if (args == "xls"){
-				xls_writer();
-			}else {
-				xlsx_writer();				
-			}
+		public xls_xlsx_writer() throws IOException {
+			
+			//common_writer();
+			//if (args == "xls"){
+			//	
+			//}else {
+			//	xlsx_writer();				
+			//}
 			
 		} // 메인메소드 끝  끝 
-		public void  common_writer(){
+		public static void  common_writer(ArrayList<Map<String,Object>> list_in, ArrayList<String> columnList_in) throws IOException{
+			
+			list = list_in;
+			columnList = columnList_in;
+			xls_writer();
+			
+			/*
 			//DB조회후 데이터를 담았다는 가상의 데이터
 			for(int i=0;i<10;i++){
 			    map=new HashMap<String,Object>();
@@ -77,10 +95,10 @@ class xls_xlsx_writer {
 			    for(String k : m.keySet()){
 			        columnList.add(k);
 			    }
-			}	
+			}*/	
 		}  // common 끝
 		
-		public void xls_writer() throws IOException {
+		public static void xls_writer() throws IOException {
 			
 			//1차로 workbook을 생성 
 			HSSFWorkbook workbook=new HSSFWorkbook();
@@ -101,13 +119,19 @@ class xls_xlsx_writer {
 			            for(int j=0;j<columnList.size();j++){
 			                //생성된 row에 컬럼을 생성한다 
 			                cell=row.createCell(j);
-			                //map에 담긴 데이터를 가져와 cell에 add한다 
-			                cell.setCellValue(String.valueOf(mapobject.get(columnList.get(j))));
+			                //map에 담긴 데이터를 가져와 cell에 add한다
+			                if(i-1==0){
+			                	cell.setCellValue(columnList.get(j));
+			                	System.out.println("칼럼네임생성");
+			                } else{
+			                	cell.setCellValue(String.valueOf(mapobject.get(columnList.get(j))));	
+			                }
+			                
 			            }
 			        }
 			    }
 			}
-			FileOutputStream fileoutputstream=new FileOutputStream("c:\\testing.xls");
+			FileOutputStream fileoutputstream=new FileOutputStream("c:\\DATA_RESULT.xls");
 			//파일을 쓴다
 			workbook.write(fileoutputstream);
 			//필수로 닫아주어야함 
@@ -116,7 +140,7 @@ class xls_xlsx_writer {
 			System.out.println("엑셀파일생성성공");
 		}   // xls_reaaer 끝
 		
-		public void xlsx_writer() throws IOException {
+		public static void xlsx_writer() throws IOException {
 			//1차로 workbook을 생성 
 			XSSFWorkbook workbook=new XSSFWorkbook();
 			//2차는 sheet생성 

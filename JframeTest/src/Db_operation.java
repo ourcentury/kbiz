@@ -193,7 +193,6 @@ public class Db_operation {
 		//String sql_done = sqlscript(args);
 		//Db_connection();
 		
-		
 	}
 	
 }
@@ -310,7 +309,7 @@ class Db_sql_operation {
 			}
 		   list.add(map);		   
 		}
-		
+		//Generate object[][] by calling arraylist_to_object 
 		Object[][] list_and_column = arraylist_to_object(list,columnlist);
 		//list_and_column[0] = list;
 		//list_and_column[1] = columnlist;
