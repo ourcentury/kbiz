@@ -15,6 +15,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.filechooser.*;
@@ -80,7 +82,7 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 	private JCheckBox product_info = new JCheckBox("상품정보");
 	private JCheckBox pro_trans_history = new JCheckBox("상품거래내역");
 	private JTextField comp_name_srch  = new JTextField("");
-	
+	private JScrollPane textfield_panel = new JScrollPane();	
 	public String[][] temp;
 	String file_extender;	
 	
@@ -244,13 +246,10 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 
 	};
 	public void Jframe_download() {
-		JLabel comp = new JLabel(); //회사정보 검색 레이블		
-		
-		JPanel group_panel = new JPanel();		
-		
+		JLabel comp = new JLabel(); //회사정보 검색 레이블
 		
 		JTextArea txtfield = new JTextArea("");
-		JScrollPane textfield_panel = new JScrollPane(txtfield);
+		
 		
 		GroupLayout g_layout = new GroupLayout(contentPane);
 		contentPane.setLayout(g_layout);
@@ -428,10 +427,36 @@ class  Jframe_Test extends JFrame implements ActionListener, ItemListener {
 			Db_operation dbo = new Db_operation();
 			// select 문 실행
 			System.out.println(srch_recog + "회사명 : " +comp_name);
-			Object[] sel_result = dbo.Db_select("search_info", srch_recog, comp_name);
+			Object[][] sel_result = dbo.Db_select("search_info", srch_recog, comp_name);
 			
+			//ArrayList<Map<String, Object>> data = (ArrayList<Map<String, Object>>) sel_result[0];			
+			//ArrayList<String> column_name =  (ArrayList<String>) sel_result[1];
+			//String[][] data = (String[][]) sel_result[0];
+			//Object[] res_ret = data.toArray();
+			//Object[] col_lists = column_name.toArray();
+			int row_cnt = sel_result.length;
+			int column_cnt = sel_result[0].length;
 			
-			System.out.println(sel_result[1]);
+			String[] column_list = new String[column_cnt];
+			Object[][] data = new Object[row_cnt-1][column_cnt];
+			//System.out.println(data[0][0]);
+			//System.out.println(sel_result);
+			//System.out.println(col_lists[0]);
+			for(int i=0;i<column_cnt;i++){
+				column_list[i] = (String) sel_result[0][i];
+			}
+				
+			System.arraycopy(sel_result, 1, data, 0, row_cnt-1);
+			
+			JTable jt = new JTable(data, column_list);		
+			jt.doLayout();
+			textfield_panel = new JScrollPane(jt);
+			textfield_panel.createVerticalScrollBar();
+			
+			textfield_panel.setPreferredSize(getPreferredSize());
+			Jframe_empty("initial");
+			Jframe_download();
+			
 			
 		}
 		

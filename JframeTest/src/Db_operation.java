@@ -163,10 +163,10 @@ public class Db_operation {
 		
 	}
 	// select statement execution 
-	public Object[] Db_select(String proc_type, String srch_recog, String comp_name){
+	public Object[][] Db_select(String proc_type, String srch_recog, String comp_name){
 		Db_sql_operation dbselect = new Db_sql_operation();
 		Connection con = Db_connection();
-		Object[] result = null;
+		Object[][] result = null;
 		try {
 			result = dbselect.select_map_gen(con, proc_type, srch_recog, comp_name);
 		} catch (SQLException e) {
@@ -272,7 +272,7 @@ class Db_sql_operation {
 	}  // db_insert_update end
 	
 	/* Select 결과문 map에 담기 */
-	public Object[] select_map_gen(Connection con, String proc_type, String srch_recog, String comp_name) throws SQLException {
+	public Object[][] select_map_gen(Connection con, String proc_type, String srch_recog, String comp_name) throws SQLException {
 		
 		CallableStatement cstmt = null;
 		Map<String, Object> map = null;		
@@ -286,10 +286,13 @@ class Db_sql_operation {
 			cstmt.setString(2, comp_name);
 		}
 		
-		Object[] list_and_column = new Object[2];
+		//Object[] list_and_column = new Object[2];
 		
 		System.out.println(cstmt);
-		ResultSet rs = cstmt.executeQuery();
+		//ResultSet rs = cstmt.executeQuery();
+		cstmt.execute();
+		ResultSet rs = cstmt.getResultSet();
+		
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int column_cnt = rsmd.getColumnCount();		
 		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -308,8 +311,9 @@ class Db_sql_operation {
 		   list.add(map);		   
 		}
 		
-		list_and_column[0] = list;
-		list_and_column[1] = columnlist;
+		Object[][] list_and_column = arraylist_to_object(list,columnlist);
+		//list_and_column[0] = list;
+		//list_and_column[1] = columnlist;
 		
 		con.close();
 		return list_and_column;
@@ -363,11 +367,20 @@ class Db_sql_operation {
 	public Object[][] arraylist_to_object(ArrayList<Map<String, Object>> lists_in, ArrayList<String> columnlist_in){
 		
 		int column_cnt = columnlist_in.size();
-		Object[][] res_Set = new String[lists_in.size()][column_cnt];        
-		for(int i=0; i<lists_in.size();i++){
-			HashMap<String, Object> tempmap = (HashMap<String, Object>)lists_in.get(i);
+		Object[][] res_Set = new String[lists_in.size()+1][column_cnt];        
+		for(int i=0; i<lists_in.size()+1;i++){
+			HashMap<String, Object> tempmap = null;
+			if(i==0){				
+			
+			} else {
+				tempmap = (HashMap<String, Object>)lists_in.get(i-1);
+			}			
 			for(int j=0; j<column_cnt;j++){
+				if(i==0){
+				res_Set[i][j] = columnlist_in.get(j);	
+				} else {	
 				res_Set[i][j] = tempmap.get(columnlist_in.get(j));
+				}
 			}
 		}
 		
